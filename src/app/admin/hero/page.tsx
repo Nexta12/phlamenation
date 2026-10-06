@@ -6,8 +6,8 @@ import Link from "next/link";
 import { heroService } from "@/services/api";
 import { HeroConfig } from "@/types";
 import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { Badge } from "@/components/ui/Badge";
+import { Input, Textarea } from "@/components/ui/Input";
 import { useUIStore } from "@/stores/useUIStore";
 import {
   Video as VideoIcon,
