@@ -105,16 +105,16 @@ export default function AdminLayout({
 
   const navItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
-    { label: "Hero Showcase", href: "/admin/hero", icon: Flame },
     { label: "Users", href: "/admin/users", icon: UserCheck },
     { label: "Music & Tracks", href: "/admin/tracks", icon: Music2 },
-    { label: "Artist Roster", href: "/admin/artists", icon: Users },
+    { label: "Artists", href: "/admin/artists", icon: Users },
     { label: "Music Videos", href: "/admin/videos", icon: Video },
     { label: "Tours & Shows", href: "/admin/events", icon: Calendar },
     { label: "Studio Bookings", href: "/admin/studios", icon: Mic },
     { label: "News & Dispatches", href: "/admin/news", icon: Newspaper },
     { label: "Inquiries & Inbox", href: "/admin/contacts", icon: Inbox },
     { label: "Promo Widgets", href: "/admin/widgets", icon: LayoutTemplate },
+    { label: "Hero Section", href: "/admin/hero", icon: Flame },
   ];
 
   const handleLogout = () => {
