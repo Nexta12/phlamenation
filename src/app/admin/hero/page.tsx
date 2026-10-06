@@ -507,10 +507,10 @@ export default function AdminHeroPage() {
             <div className="flex items-center justify-between border-b border-[#1C1C26] pb-3">
               <div>
                 <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C]">
-                  3. Typography & Calls to Action
+                  3. Brand Typography & Calls to Action
                 </span>
                 <p className="text-xs text-[#9D9DAE] mt-0.5">
-                  Overlay branding, headline text, and action buttons on the Hero.
+                  Displayed on the Homepage when in Brand Showcase mode or when no video or image banner is present.
                 </p>
               </div>
 
@@ -710,8 +710,11 @@ export default function AdminHeroPage() {
             {/* Cinema overlay gradient */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 pointer-events-none" />
 
-            {/* Overlay Simulated Text */}
-            {showOverlayText && (
+            {/* Overlay Simulated Text (Only appears when in Default mode or when no media is present) */}
+            {showOverlayText &&
+              (heroType === "default" ||
+                (heroType === "video" && !activeVideoSrc) ||
+                (heroType === "image" && !activeImageSrc)) && (
               <div className="absolute inset-0 p-5 flex flex-col justify-end pointer-events-none z-10">
                 {badgeText && (
                   <div className="text-[10px] font-bold uppercase tracking-widest text-[#E5A93C] mb-1">

@@ -80,7 +80,12 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
       ? videoUrl.replace("/upload/", "/upload/f_auto,q_auto/")
       : videoUrl;
 
-  const showOverlay = hero?.showOverlayText !== false;
+  // Text should ONLY appear when there's no video or image banner
+  const hasActiveMedia =
+    Boolean(type === "video" && videoUrl) ||
+    Boolean(type === "image" && imageUrl);
+
+  const showOverlay = !hasActiveMedia;
   const badgeText = hero?.badgeText || "PHLAME NATION ENTERTAINMENT";
   const headline = hero?.headline || "IGNITING GLOBAL SOUNDS";
   const subheadline =
@@ -121,7 +126,7 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
 
       {/* 2. Visual Layer: Video, Image Banner, or Default */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
-        {type === "video" && (
+        {type === "video" && videoUrl && (
           <>
             {isYouTube ? (
               <div className="absolute inset-0 w-full h-full pointer-events-none">
@@ -174,10 +179,22 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
       <div className="absolute inset-0 bg-gradient-to-t from-[#08080A] via-[#08080A]/40 to-black/60 pointer-events-none z-10" />
       <div className="absolute inset-0 bg-black/25 pointer-events-none z-10" />
 
-      {/* 4. Luxury Typography & Calls to Action Overlay */}
+      {/* 4. Luxury Typography & Calls to Action Overlay (Shown ONLY when no video or image banner) */}
       {showOverlay && (
         <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 w-full flex flex-col items-center sm:items-start text-center sm:text-left pt-20">
           <div className="max-w-2xl space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700">
+            {type === "default" && (
+              <div className="relative w-24 h-24 sm:w-28 sm:h-28 mb-1 drop-shadow-[0_10px_35px_rgba(229,169,60,0.4)]">
+                <Image
+                  src="/images/c-logo.png"
+                  alt="Phlame Nation Logo"
+                  fill
+                  priority
+                  className="object-contain"
+                />
+              </div>
+            )}
+
             {badgeText && (
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 border border-[#E5A93C]/40 backdrop-blur-md">
                 <Flame className="w-3.5 h-3.5 text-[#E5A93C]" />
