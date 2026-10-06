@@ -254,3 +254,26 @@ export interface ApiResponse<T> {
     unreadCount?: number;
   };
 }
+
+export interface HeroConfig {
+  _id?: string;
+  type: "video" | "image" | "default";
+  videoUrl?: string;
+  videoPublicId?: string;
+  videoType?: "cloudinary" | "mp4" | "youtube";
+  imageUrl?: string;
+  imagePublicId?: string;
+  badgeText?: string;
+  headline?: string;
+  subheadline?: string;
+  primaryCtaText?: string;
+  primaryCtaLink?: string;
+  secondaryCtaText?: string;
+  secondaryCtaLink?: string;
+  showOverlayText?: boolean;
+  isMutedDefault?: boolean;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+}
+

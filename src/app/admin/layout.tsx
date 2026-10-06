@@ -93,6 +93,7 @@ export default function AdminLayout({
     if (path.startsWith("/admin/studios")) return "Studios";
     if (path.startsWith("/admin/news")) return "News";
     if (path.startsWith("/admin/contacts")) return "Inquiries";
+    if (path.startsWith("/admin/hero")) return "Hero Showcase";
     if (path.startsWith("/admin/users")) return "User Access & Roles";
     if (path.startsWith("/admin/widgets")) return "Widgets";
     if (path.startsWith("/admin/gallery")) return "Gallery";
@@ -104,6 +105,7 @@ export default function AdminLayout({
 
   const navItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+    { label: "Hero Showcase", href: "/admin/hero", icon: Flame },
     { label: "Users", href: "/admin/users", icon: UserCheck },
     { label: "Music & Tracks", href: "/admin/tracks", icon: Music2 },
     { label: "Artist Roster", href: "/admin/artists", icon: Users },

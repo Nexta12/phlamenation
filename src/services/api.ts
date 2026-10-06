@@ -12,6 +12,7 @@ import {
   NewsletterSubscriber,
   Widget,
   User,
+  HeroConfig,
 } from "@/types";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3040/api/v1";
@@ -180,6 +181,14 @@ class ApiService {
     });
   }
 
+  put<T>(endpoint: string, body?: unknown) {
+    const isFormData = body instanceof FormData;
+    return this.request<T>(endpoint, {
+      method: "PUT",
+      body: isFormData ? body : JSON.stringify(body),
+    });
+  }
+
   delete<T>(endpoint: string) {
     return this.request<T>(endpoint, { method: "DELETE" });
   }
@@ -286,4 +295,11 @@ export const widgetService = {
   deleteWidget: (id: string) => api.delete(`/widgets/${id}`),
 };
 
+export const heroService = {
+  getHero: () => api.get<HeroConfig>("/hero"),
+  updateHero: (data: FormData | Partial<HeroConfig>) => api.put<HeroConfig>("/hero", data),
+  resetHero: () => api.post<HeroConfig>("/hero/reset"),
+};
+
 export default api;
+
