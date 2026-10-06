@@ -642,15 +642,7 @@ export default function AdminHeroPage() {
 
             {heroType === "default" && (
               <div className="absolute inset-0 bg-gradient-to-br from-[#12121A] via-black to-[#08080A] flex flex-col items-center justify-center">
-                <div className="relative w-16 h-16 mb-2">
-                  <div className="absolute -inset-3 bg-[#E5A93C]/20 rounded-full blur-xl animate-pulse" />
-                  <Image
-                    src="/images/c-logo.png"
-                    alt="Logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
+                <div className="absolute w-44 h-44 bg-[#E5A93C]/10 rounded-full blur-3xl pointer-events-none" />
               </div>
             )}
 
@@ -661,13 +653,13 @@ export default function AdminHeroPage() {
             {(heroType === "default" ||
               (heroType === "video" && !activeVideoSrc) ||
               (heroType === "image" && !activeImageSrc)) && (
-              <div className="absolute inset-0 p-5 flex flex-col justify-end pointer-events-none z-10">
+              <div className="absolute inset-0 p-5 flex flex-col items-center justify-center text-center pointer-events-none z-10">
                 {badgeText && (
                   <div className="text-[10px] font-bold uppercase tracking-widest text-[#E5A93C] mb-1">
                     {badgeText}
                   </div>
                 )}
-                <div className="text-base sm:text-lg font-black text-white leading-tight mb-1">
+                <div className="text-base sm:text-lg font-black text-white leading-tight mb-1 max-w-sm">
                   {headline || "IGNITING GLOBAL SOUNDS"}
                 </div>
                 {subheadline && (
@@ -675,7 +667,7 @@ export default function AdminHeroPage() {
                     {subheadline}
                   </div>
                 )}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                   {primaryCtaText && (
                     <span className="px-3 py-1 rounded-md bg-[#E5A93C] text-[#08080A] text-[10px] font-bold shadow">
                       {primaryCtaText}

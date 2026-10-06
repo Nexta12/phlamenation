@@ -200,22 +200,10 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
 
       {/* 4. Luxury Typography & Calls to Action Overlay (Shown ONLY when no video or image banner) */}
       {showOverlay && (
-        <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-8 w-full flex flex-col items-center sm:items-start text-center sm:text-left pt-20">
-          <div className="max-w-2xl space-y-4 animate-in fade-in slide-in-from-bottom-6 duration-700">
-            {type === "default" && (
-              <div className="relative w-24 h-24 sm:w-28 sm:h-28 mb-1 drop-shadow-[0_10px_35px_rgba(229,169,60,0.4)]">
-                <Image
-                  src="/images/c-logo.png"
-                  alt="Phlame Nation Logo"
-                  fill
-                  priority
-                  className="object-contain"
-                />
-              </div>
-            )}
-
+        <div className="relative z-20 max-w-4xl mx-auto px-4 sm:px-8 w-full flex flex-col items-center justify-center text-center">
+          <div className="w-full space-y-5 animate-in fade-in slide-in-from-bottom-6 duration-700 flex flex-col items-center text-center">
             {badgeText && (
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/50 border border-[#E5A93C]/40 backdrop-blur-md">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/50 border border-[#E5A93C]/40 backdrop-blur-md">
                 <Flame className="w-3.5 h-3.5 text-[#E5A93C]" />
                 <span className="text-[11px] font-bold uppercase tracking-widest text-[#E5A93C]">
                   {badgeText}
@@ -223,18 +211,18 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
               </div>
             )}
 
-            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.08] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)]">
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight uppercase leading-[1.08] drop-shadow-[0_4px_24px_rgba(0,0,0,0.8)] max-w-3xl mx-auto">
               {headline}
             </h1>
 
             {subheadline && (
-              <p className="text-sm sm:text-base text-[#D4D4E2] font-normal leading-relaxed max-w-xl drop-shadow-md">
+              <p className="text-sm sm:text-base text-[#D4D4E2] font-normal leading-relaxed max-w-2xl mx-auto drop-shadow-md">
                 {subheadline}
               </p>
             )}
 
             {/* CTA Action Buttons */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3.5 pt-3">
+            <div className="flex flex-wrap items-center justify-center gap-3.5 pt-3">
               {primaryCtaText && (
                 <Link
                   href={primaryCtaLink}
