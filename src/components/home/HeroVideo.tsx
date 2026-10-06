@@ -13,9 +13,11 @@ interface HeroVideoProps {
 
 export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
   const [hero, setHero] = useState<HeroConfig | null>(initialConfig || null);
-  const [mediaLoaded, setMediaLoaded] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const mediaReadyRef = useRef(false);
+  const minTimerDoneRef = useRef(false);
 
   // Fetch active hero configuration from backend API
   useEffect(() => {
@@ -32,16 +34,33 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
       });
   }, []);
 
-  // Preloader transition fallback
+  // Show c-logo.png as a loading animation for at least 1.8s, exactly as it was before
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setMediaLoaded(true);
-    }, 1600);
-    return () => clearTimeout(timer);
-  }, []);
+    const minTimer = setTimeout(() => {
+      minTimerDoneRef.current = true;
+      // If media has already loaded or in default mode, transition out smoothly
+      if (mediaReadyRef.current || hero?.type === "default") {
+        setVideoLoaded(true);
+      }
+    }, 1800);
+
+    // Safety fallback so user is never stuck if media load event delays
+    const safetyTimer = setTimeout(() => {
+      setVideoLoaded(true);
+    }, 3800);
+
+    return () => {
+      clearTimeout(minTimer);
+      clearTimeout(safetyTimer);
+    };
+  }, [hero?.type]);
 
   const handleMediaLoaded = () => {
-    setMediaLoaded(true);
+    mediaReadyRef.current = true;
+    // Only transition if the minimum brand loading animation time (1.8s) has finished
+    if (minTimerDoneRef.current) {
+      setVideoLoaded(true);
+    }
   };
 
   const toggleSound = () => {
@@ -101,7 +120,7 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
       {/* 1. Preloader Screen: Phlame Nation Logo displayed until media is ready */}
       <div
         className={`absolute inset-0 z-30 flex flex-col items-center justify-center bg-black transition-opacity duration-1000 ${
-          mediaLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+          videoLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}
       >
         <div className="flex flex-col items-center gap-4 text-center px-4 animate-in fade-in zoom-in-95 duration-500">
