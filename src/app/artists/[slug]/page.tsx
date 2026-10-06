@@ -30,7 +30,6 @@ import {
   ExternalLink,
   MapPin,
   Clock,
-  Sparkles,
 } from "lucide-react";
 
 interface ArtistDetailProps {

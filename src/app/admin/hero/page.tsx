@@ -20,8 +20,6 @@ import {
   Volume2,
   VolumeX,
   RotateCcw,
-  Sparkles,
-  Play,
   Eye,
 } from "lucide-react";
 
@@ -97,7 +95,7 @@ export default function AdminHeroPage() {
       if (file.size > 100 * 1024 * 1024) {
         addToast({
           title: "File Too Large",
-          message: "Video file must be under 100MB for Cloudinary streaming.",
+          message: "Video file must be under 100MB.",
           type: "error",
         });
         return;
@@ -156,16 +154,16 @@ export default function AdminHeroPage() {
         setImageFile(null);
         setImageFilePreview("");
         addToast({
-          title: "Hero Updated",
-          message: "Homepage Hero section updated successfully!",
+          title: "Saved",
+          message: "Hero settings saved successfully.",
           type: "success",
         });
       }
     } catch (err: any) {
       console.error("Failed to update hero:", err);
       addToast({
-        title: "Update Failed",
-        message: err.response?.data?.message || err.message || "Failed to update Hero configuration.",
+        title: "Error",
+        message: err.response?.data?.message || err.message || "Failed to update hero.",
         type: "error",
       });
     } finally {
@@ -174,7 +172,7 @@ export default function AdminHeroPage() {
   };
 
   const handleReset = async () => {
-    if (!confirm("Are you sure you want to reset the Hero section to its default showcase?")) return;
+    if (!confirm("Reset Hero section to default?")) return;
     try {
       setResetting(true);
       const res = await heroService.resetHero();
@@ -188,7 +186,7 @@ export default function AdminHeroPage() {
         setImageFile(null);
         setImageFilePreview("");
         addToast({
-          title: "Hero Reset",
+          title: "Reset",
           message: "Hero section reset to default.",
           type: "info",
         });
@@ -196,7 +194,7 @@ export default function AdminHeroPage() {
     } catch (err: any) {
       console.error("Failed to reset hero:", err);
       addToast({
-        title: "Reset Failed",
+        title: "Error",
         message: err.message || "Could not reset hero.",
         type: "error",
       });
@@ -205,7 +203,6 @@ export default function AdminHeroPage() {
     }
   };
 
-  // Preview video/image resolution
   const activeVideoSrc = videoFilePreview || videoUrl || hero?.videoUrl || "";
   const activeImageSrc = imageFilePreview || imageUrl || hero?.imageUrl || "";
   const isYouTube =
@@ -213,22 +210,17 @@ export default function AdminHeroPage() {
 
   return (
     <div className="space-y-8 pb-16">
-      {/* Header bar */}
+      {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#242430] pb-6">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C]">
-              HOMEPAGE SHOWCASE
-            </span>
-            <Badge variant="outline" className="text-[10px] py-0.5">
-              Live Control
-            </Badge>
-          </div>
+          <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C] block mb-1">
+            HERO SECTION
+          </span>
           <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Hero Section Manager
+            Hero Manager
           </h1>
           <p className="text-sm text-[#9D9DAE] mt-1">
-            Seamlessly toggle between cinematic Cloudinary video loops, full-bleed image banners, or minimal brand hero.
+            Manage the hero video, image banner, or default brand view.
           </p>
         </div>
 
@@ -239,7 +231,7 @@ export default function AdminHeroPage() {
             className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg bg-[#1A1A22] text-[#F8F8FA] hover:bg-[#242430] border border-[#242430] transition-colors"
           >
             <Eye className="w-3.5 h-3.5 text-[#E5A93C]" />
-            View Live Site
+            View Live
             <ExternalLink className="w-3 h-3 text-[#9D9DAE]" />
           </Link>
 
@@ -257,95 +249,77 @@ export default function AdminHeroPage() {
         </div>
       </div>
 
-      {/* Main Content: 2-Column Grid */}
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Form: Controls & Uploads (7 Cols) */}
+        {/* Form (7 Cols) */}
         <form onSubmit={handleSave} className="lg:col-span-7 space-y-6">
-          {/* Mode Switcher */}
+          {/* Mode Selector */}
           <div className="p-5 rounded-2xl bg-[#0D0D12] border border-[#242430]">
             <label className="block text-xs font-bold uppercase tracking-widest text-[#E5A93C] mb-3">
-              1. Choose Hero Mode
+              1. Hero Mode
             </label>
             <div className="grid grid-cols-3 gap-3">
-              {/* Video Mode */}
               <button
                 type="button"
                 onClick={() => setHeroType("video")}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col gap-2 ${
                   heroType === "video"
-                    ? "bg-[#E5A93C]/10 border-[#E5A93C] text-white shadow-lg shadow-[#E5A93C]/5"
+                    ? "bg-[#E5A93C]/10 border-[#E5A93C] text-white"
                     : "bg-[#14141B] border-[#242430] text-[#9D9DAE] hover:border-[#3E3E50]"
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <VideoIcon className={`w-5 h-5 ${heroType === "video" ? "text-[#E5A93C]" : ""}`} />
-                  {heroType === "video" && (
-                    <CheckCircle2 className="w-4 h-4 text-[#E5A93C]" />
-                  )}
+                  {heroType === "video" && <CheckCircle2 className="w-4 h-4 text-[#E5A93C]" />}
                 </div>
-                <div className="font-semibold text-sm">Cinematic Video</div>
-                <div className="text-[11px] leading-snug opacity-80">
-                  Cloudinary MP4 loop or YouTube embed
-                </div>
+                <div className="font-semibold text-sm">Video</div>
+                <div className="text-[11px] opacity-75">MP4, WebM or YouTube</div>
               </button>
 
-              {/* Image Banner Mode */}
               <button
                 type="button"
                 onClick={() => setHeroType("image")}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col gap-2 ${
                   heroType === "image"
-                    ? "bg-[#E5A93C]/10 border-[#E5A93C] text-white shadow-lg shadow-[#E5A93C]/5"
+                    ? "bg-[#E5A93C]/10 border-[#E5A93C] text-white"
                     : "bg-[#14141B] border-[#242430] text-[#9D9DAE] hover:border-[#3E3E50]"
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <ImageIcon className={`w-5 h-5 ${heroType === "image" ? "text-[#E5A93C]" : ""}`} />
-                  {heroType === "image" && (
-                    <CheckCircle2 className="w-4 h-4 text-[#E5A93C]" />
-                  )}
+                  {heroType === "image" && <CheckCircle2 className="w-4 h-4 text-[#E5A93C]" />}
                 </div>
                 <div className="font-semibold text-sm">Image Banner</div>
-                <div className="text-[11px] leading-snug opacity-80">
-                  High-res cover art or campaign poster
-                </div>
+                <div className="text-[11px] opacity-75">Full-bleed artwork</div>
               </button>
 
-              {/* Default Brand Mode */}
               <button
                 type="button"
                 onClick={() => setHeroType("default")}
                 className={`p-4 rounded-xl border text-left transition-all cursor-pointer flex flex-col gap-2 ${
                   heroType === "default"
-                    ? "bg-[#E5A93C]/10 border-[#E5A93C] text-white shadow-lg shadow-[#E5A93C]/5"
+                    ? "bg-[#E5A93C]/10 border-[#E5A93C] text-white"
                     : "bg-[#14141B] border-[#242430] text-[#9D9DAE] hover:border-[#3E3E50]"
                 }`}
               >
                 <div className="flex items-center justify-between w-full">
                   <Flame className={`w-5 h-5 ${heroType === "default" ? "text-[#E5A93C]" : ""}`} />
-                  {heroType === "default" && (
-                    <CheckCircle2 className="w-4 h-4 text-[#E5A93C]" />
-                  )}
+                  {heroType === "default" && <CheckCircle2 className="w-4 h-4 text-[#E5A93C]" />}
                 </div>
-                <div className="font-semibold text-sm">Brand Showcase</div>
-                <div className="text-[11px] leading-snug opacity-80">
-                  Gold crest logo with animated aura
-                </div>
+                <div className="font-semibold text-sm">Default Brand</div>
+                <div className="text-[11px] opacity-75">Logo crest & text</div>
               </button>
             </div>
           </div>
 
-          {/* Conditional Media Configuration */}
+          {/* Media Configuration */}
           {heroType === "video" && (
-            <div className="p-5 rounded-2xl bg-[#0D0D12] border border-[#242430] space-y-5 animate-in fade-in duration-300">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C]">
-                  2. Video Source
-                </span>
-                <span className="text-[11px] text-[#9D9DAE]">MP4, WebM, or YouTube</span>
-              </div>
+            <div className="p-5 rounded-2xl bg-[#0D0D12] border border-[#242430] space-y-5">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C] block">
+                2. Video Source
+              </span>
 
-              {/* Option A: Direct Video Upload to Cloudinary */}
+              {/* Upload to Cloudinary */}
               <div className="p-4 rounded-xl bg-[#14141B] border border-dashed border-[#2E2E3E] space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2.5">
@@ -354,10 +328,10 @@ export default function AdminHeroPage() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-white">
-                        Upload Video directly to Cloudinary
+                        Upload Video file
                       </div>
                       <div className="text-xs text-[#9D9DAE]">
-                        Max 100MB • Auto-streams via API
+                        Max 100MB (MP4, WebM, MOV)
                       </div>
                     </div>
                   </div>
@@ -374,22 +348,22 @@ export default function AdminHeroPage() {
                     size="sm"
                     onClick={() => videoInputRef.current?.click()}
                   >
-                    Select Video
+                    Select File
                   </Button>
                 </div>
                 {videoFile && (
                   <div className="text-xs text-[#E5A93C] flex items-center gap-2 bg-[#E5A93C]/10 p-2 rounded-lg">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    Selected: {videoFile.name} ({(videoFile.size / (1024 * 1024)).toFixed(1)} MB)
+                    {videoFile.name} ({(videoFile.size / (1024 * 1024)).toFixed(1)} MB)
                   </div>
                 )}
               </div>
 
-              {/* Option B: Video URL input */}
+              {/* Or Paste URL */}
               <div className="space-y-2">
                 <label className="text-xs font-medium text-[#9D9DAE] flex items-center gap-1.5">
                   <LinkIcon className="w-3.5 h-3.5 text-[#E5A93C]" />
-                  Or Paste Video URL (Cloudinary MP4 or YouTube Link)
+                  Or Video URL
                 </label>
                 <Input
                   value={videoUrl}
@@ -397,12 +371,12 @@ export default function AdminHeroPage() {
                     setVideoUrl(e.target.value);
                     if (videoFile) setVideoFile(null);
                   }}
-                  placeholder="https://res.cloudinary.com/.../video.mp4 or https://youtube.com/watch?v=..."
+                  placeholder="https://res.cloudinary.com/.../video.mp4 or YouTube link"
                   className="bg-[#14141B] border-[#242430]"
                 />
               </div>
 
-              {/* Audio toggle */}
+              {/* Sound toggle */}
               <div className="flex items-center justify-between pt-2 border-t border-[#1C1C26]">
                 <div className="space-y-0.5">
                   <div className="text-sm font-medium text-white flex items-center gap-1.5">
@@ -414,7 +388,7 @@ export default function AdminHeroPage() {
                     Default Muted Autoplay
                   </div>
                   <div className="text-xs text-[#9D9DAE]">
-                    Browsers require autoplay videos to start muted. Visitors can toggle sound on the hero page.
+                    Browsers require autoplay videos to be muted by default.
                   </div>
                 </div>
                 <button
@@ -435,15 +409,12 @@ export default function AdminHeroPage() {
           )}
 
           {heroType === "image" && (
-            <div className="p-5 rounded-2xl bg-[#0D0D12] border border-[#242430] space-y-5 animate-in fade-in duration-300">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C]">
-                  2. Image Banner Source
-                </span>
-                <span className="text-[11px] text-[#9D9DAE]">JPG, PNG, WebP</span>
-              </div>
+            <div className="p-5 rounded-2xl bg-[#0D0D12] border border-[#242430] space-y-5">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C] block">
+                2. Image Banner Source
+              </span>
 
-              {/* Option A: Direct Image Upload to Cloudinary */}
+              {/* Upload to Cloudinary */}
               <div className="p-4 rounded-xl bg-[#14141B] border border-dashed border-[#2E2E3E] space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2.5">
@@ -452,10 +423,10 @@ export default function AdminHeroPage() {
                     </div>
                     <div>
                       <div className="text-sm font-semibold text-white">
-                        Upload Image Banner to Cloudinary
+                        Upload Image Banner
                       </div>
                       <div className="text-xs text-[#9D9DAE]">
-                        Recommended 1920x1080 • Max 15MB
+                        1920x1080 recommended • Max 15MB
                       </div>
                     </div>
                   </div>
@@ -472,22 +443,22 @@ export default function AdminHeroPage() {
                     size="sm"
                     onClick={() => imageInputRef.current?.click()}
                   >
-                    Select Image
+                    Select File
                   </Button>
                 </div>
                 {imageFile && (
                   <div className="text-xs text-[#E5A93C] flex items-center gap-2 bg-[#E5A93C]/10 p-2 rounded-lg">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    Selected: {imageFile.name}
+                    {imageFile.name}
                   </div>
                 )}
               </div>
 
-              {/* Option B: Image URL input */}
+              {/* Or Paste URL */}
               <div className="space-y-2">
                 <label className="text-xs font-medium text-[#9D9DAE] flex items-center gap-1.5">
                   <LinkIcon className="w-3.5 h-3.5 text-[#E5A93C]" />
-                  Or Paste High-Res Image URL
+                  Or Image URL
                 </label>
                 <Input
                   value={imageUrl}
@@ -502,150 +473,126 @@ export default function AdminHeroPage() {
             </div>
           )}
 
-          {/* Overlay Text & CTA Settings */}
+          {/* Typography Settings (shown when in default mode or when configuring text) */}
           <div className="p-5 rounded-2xl bg-[#0D0D12] border border-[#242430] space-y-4">
-            <div className="flex items-center justify-between border-b border-[#1C1C26] pb-3">
-              <div>
-                <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C]">
-                  3. Brand Typography & Calls to Action
-                </span>
-                <p className="text-xs text-[#9D9DAE] mt-0.5">
-                  Displayed on the Homepage when in Brand Showcase mode or when no video or image banner is present.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-[#9D9DAE]">Show Text</span>
-                <button
-                  type="button"
-                  onClick={() => setShowOverlayText(!showOverlayText)}
-                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                    showOverlayText ? "bg-[#E5A93C]" : "bg-[#242430]"
-                  }`}
-                >
-                  <span
-                    className={`block w-4 h-4 rounded-full bg-white transition-transform ${
-                      showOverlayText ? "translate-x-6" : "translate-x-1"
-                    }`}
-                  />
-                </button>
-              </div>
+            <div className="border-b border-[#1C1C26] pb-3">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#E5A93C] block">
+                3. Brand Typography & Links
+              </span>
+              <p className="text-xs text-[#9D9DAE] mt-0.5">
+                Displays on the homepage when in Default Brand mode or when no video or image banner is present.
+              </p>
             </div>
 
-            {showOverlayText && (
-              <div className="space-y-4 animate-in fade-in duration-200">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium text-[#9D9DAE] mb-1">
-                      Badge Label
-                    </label>
-                    <Input
-                      value={badgeText}
-                      onChange={(e) => setBadgeText(e.target.value)}
-                      placeholder="PHLAME NATION ENTERTAINMENT"
-                      className="bg-[#14141B] border-[#242430]"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium text-[#9D9DAE] mb-1">
-                      Primary Headline
-                    </label>
-                    <Input
-                      value={headline}
-                      onChange={(e) => setHeadline(e.target.value)}
-                      placeholder="IGNITING GLOBAL SOUNDS"
-                      className="bg-[#14141B] border-[#242430]"
-                    />
-                  </div>
-                </div>
-
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-medium text-[#9D9DAE] mb-1">
-                    Subheadline Description
+                    Badge Label
                   </label>
                   <Input
-                    value={subheadline}
-                    onChange={(e) => setSubheadline(e.target.value)}
-                    placeholder="The frontline of African sonic excellence, world tours, and platinum artistry."
+                    value={badgeText}
+                    onChange={(e) => setBadgeText(e.target.value)}
+                    placeholder="PHLAME NATION ENTERTAINMENT"
                     className="bg-[#14141B] border-[#242430]"
                   />
                 </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#9D9DAE] mb-1">
+                    Headline
+                  </label>
+                  <Input
+                    value={headline}
+                    onChange={(e) => setHeadline(e.target.value)}
+                    placeholder="IGNITING GLOBAL SOUNDS"
+                    className="bg-[#14141B] border-[#242430]"
+                  />
+                </div>
+              </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                  <div className="space-y-2">
-                    <label className="block text-xs font-medium text-[#9D9DAE]">
-                      Primary Button (Text & Link)
-                    </label>
-                    <div className="flex gap-2">
-                      <Input
-                        value={primaryCtaText}
-                        onChange={(e) => setPrimaryCtaText(e.target.value)}
-                        placeholder="Listen to Catalogue"
-                        className="bg-[#14141B] border-[#242430] w-1/2"
-                      />
-                      <Input
-                        value={primaryCtaLink}
-                        onChange={(e) => setPrimaryCtaLink(e.target.value)}
-                        placeholder="/music"
-                        className="bg-[#14141B] border-[#242430] w-1/2"
-                      />
-                    </div>
+              <div>
+                <label className="block text-xs font-medium text-[#9D9DAE] mb-1">
+                  Subheadline
+                </label>
+                <Input
+                  value={subheadline}
+                  onChange={(e) => setSubheadline(e.target.value)}
+                  placeholder="The frontline of African sonic excellence, world tours, and platinum artistry."
+                  className="bg-[#14141B] border-[#242430]"
+                />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium text-[#9D9DAE]">
+                    Primary Button (Text & Link)
+                  </label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={primaryCtaText}
+                      onChange={(e) => setPrimaryCtaText(e.target.value)}
+                      placeholder="Listen to Catalogue"
+                      className="bg-[#14141B] border-[#242430] w-1/2"
+                    />
+                    <Input
+                      value={primaryCtaLink}
+                      onChange={(e) => setPrimaryCtaLink(e.target.value)}
+                      placeholder="/music"
+                      className="bg-[#14141B] border-[#242430] w-1/2"
+                    />
                   </div>
+                </div>
 
-                  <div className="space-y-2">
-                    <label className="block text-xs font-medium text-[#9D9DAE]">
-                      Secondary Button (Text & Link)
-                    </label>
-                    <div className="flex gap-2">
-                      <Input
-                        value={secondaryCtaText}
-                        onChange={(e) => setSecondaryCtaText(e.target.value)}
-                        placeholder="Meet the Roster"
-                        className="bg-[#14141B] border-[#242430] w-1/2"
-                      />
-                      <Input
-                        value={secondaryCtaLink}
-                        onChange={(e) => setSecondaryCtaLink(e.target.value)}
-                        placeholder="/artists"
-                        className="bg-[#14141B] border-[#242430] w-1/2"
-                      />
-                    </div>
+                <div className="space-y-2">
+                  <label className="block text-xs font-medium text-[#9D9DAE]">
+                    Secondary Button (Text & Link)
+                  </label>
+                  <div className="flex gap-2">
+                    <Input
+                      value={secondaryCtaText}
+                      onChange={(e) => setSecondaryCtaText(e.target.value)}
+                      placeholder="Meet the Roster"
+                      className="bg-[#14141B] border-[#242430] w-1/2"
+                    />
+                    <Input
+                      value={secondaryCtaLink}
+                      onChange={(e) => setSecondaryCtaLink(e.target.value)}
+                      placeholder="/artists"
+                      className="bg-[#14141B] border-[#242430] w-1/2"
+                    />
                   </div>
                 </div>
               </div>
-            )}
+            </div>
           </div>
 
-          {/* Submit Action */}
+          {/* Submit */}
           <div className="flex items-center justify-end gap-3 pt-2">
             <Button
               type="submit"
               variant="primary"
               size="md"
               isLoading={saving}
-              className="px-8 font-bold"
+              className="px-7 font-semibold"
             >
-              <Sparkles className="w-4 h-4 mr-1.5" />
-              Save & Publish Changes
+              Save Changes
             </Button>
           </div>
         </form>
 
-        {/* Right Column: Live Interactive Preview (5 Cols) */}
+        {/* Live Preview (5 Cols) */}
         <div className="lg:col-span-5 space-y-4 lg:sticky lg:top-8">
           <div className="flex items-center justify-between">
             <div className="text-xs font-bold uppercase tracking-widest text-[#E5A93C] flex items-center gap-1.5">
               <Eye className="w-3.5 h-3.5" />
-              Live Interactive Preview
+              Live Preview
             </div>
             <span className="text-[11px] text-[#9D9DAE] font-medium capitalize">
               Mode: {heroType}
             </span>
           </div>
 
-          {/* Simulated Screen Container */}
-          <div className="relative w-full aspect-[16/10] sm:aspect-video rounded-2xl overflow-hidden bg-black border border-[#242430] shadow-2xl flex items-center justify-center">
-            {/* Visual Media Layer */}
+          <div className="relative w-full aspect-[16/10] sm:aspect-video rounded-2xl overflow-hidden bg-black border border-[#242430] shadow-xl flex items-center justify-center">
             {heroType === "video" && (
               <>
                 {isYouTube ? (
@@ -670,7 +617,7 @@ export default function AdminHeroPage() {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-[#9D9DAE] text-xs">
                     <VideoIcon className="w-8 h-8 text-[#E5A93C]/40 mb-2" />
-                    Upload or paste a video URL above
+                    Select or paste a video URL above
                   </div>
                 )}
               </>
@@ -687,7 +634,7 @@ export default function AdminHeroPage() {
                 ) : (
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-[#9D9DAE] text-xs">
                     <ImageIcon className="w-8 h-8 text-[#E5A93C]/40 mb-2" />
-                    Upload or paste an image banner URL above
+                    Select or paste an image URL above
                   </div>
                 )}
               </>
@@ -695,8 +642,8 @@ export default function AdminHeroPage() {
 
             {heroType === "default" && (
               <div className="absolute inset-0 bg-gradient-to-br from-[#12121A] via-black to-[#08080A] flex flex-col items-center justify-center">
-                <div className="relative w-20 h-20 mb-2">
-                  <div className="absolute -inset-4 bg-[#E5A93C]/20 rounded-full blur-xl animate-pulse" />
+                <div className="relative w-16 h-16 mb-2">
+                  <div className="absolute -inset-3 bg-[#E5A93C]/20 rounded-full blur-xl animate-pulse" />
                   <Image
                     src="/images/c-logo.png"
                     alt="Logo"
@@ -707,14 +654,13 @@ export default function AdminHeroPage() {
               </div>
             )}
 
-            {/* Cinema overlay gradient */}
+            {/* Cinema overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 pointer-events-none" />
 
-            {/* Overlay Simulated Text (Only appears when in Default mode or when no media is present) */}
-            {showOverlayText &&
-              (heroType === "default" ||
-                (heroType === "video" && !activeVideoSrc) ||
-                (heroType === "image" && !activeImageSrc)) && (
+            {/* Overlay Text (Only visible when no video and no image banner) */}
+            {(heroType === "default" ||
+              (heroType === "video" && !activeVideoSrc) ||
+              (heroType === "image" && !activeImageSrc)) && (
               <div className="absolute inset-0 p-5 flex flex-col justify-end pointer-events-none z-10">
                 {badgeText && (
                   <div className="text-[10px] font-bold uppercase tracking-widest text-[#E5A93C] mb-1">
@@ -743,25 +689,6 @@ export default function AdminHeroPage() {
                 </div>
               </div>
             )}
-          </div>
-
-          {/* Quick tips card */}
-          <div className="p-4 rounded-xl bg-[#0D0D12] border border-[#242430] text-xs text-[#9D9DAE] space-y-2">
-            <div className="font-semibold text-white flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-[#E5A93C]" />
-              Pro-Tips for Maximum Performance
-            </div>
-            <ul className="list-disc pl-4 space-y-1 text-[11px] leading-relaxed">
-              <li>
-                <strong>Cloudinary Videos:</strong> Upload MP4 clips between 5–30 seconds. The API automatically streams and loops them.
-              </li>
-              <li>
-                <strong>Image Banners:</strong> Use 1920x1080 JPEG or WebP images under 2MB for fast mobile loading.
-              </li>
-              <li>
-                <strong>Instant Updates:</strong> Saving updates your MongoDB database immediately. No Vercel redeployment required!
-              </li>
-            </ul>
           </div>
         </div>
       </div>
