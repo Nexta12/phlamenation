@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Volume2, VolumeX, ArrowRight, Play, Flame } from "lucide-react";
+import { ArrowRight, Play, Flame } from "lucide-react";
 import { heroService } from "@/services/api";
 import { HeroConfig } from "@/types";
 
@@ -14,7 +14,6 @@ interface HeroVideoProps {
 export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
   const [hero, setHero] = useState<HeroConfig | null>(initialConfig || null);
   const [videoLoaded, setVideoLoaded] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
   const mediaReadyRef = useRef(false);
   const minTimerDoneRef = useRef(false);
@@ -26,7 +25,6 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
       .then((res) => {
         if (res.data) {
           setHero(res.data);
-          setIsMuted(res.data.isMutedDefault !== false);
         }
       })
       .catch((err) => {
@@ -60,15 +58,6 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
     // Only transition if the minimum brand loading animation time (1.8s) has finished
     if (minTimerDoneRef.current) {
       setVideoLoaded(true);
-    }
-  };
-
-  const toggleSound = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !videoRef.current.muted;
-      setIsMuted(videoRef.current.muted);
-    } else {
-      setIsMuted(!isMuted);
     }
   };
 
@@ -163,7 +152,7 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
                 src={optimizedVideoUrl}
                 autoPlay
                 loop
-                muted={isMuted}
+                muted
                 playsInline
                 onLoadedData={handleMediaLoaded}
                 className="absolute inset-0 w-full h-full object-cover"
@@ -245,22 +234,6 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
             </div>
           </div>
         </div>
-      )}
-
-      {/* 5. Floating Audio Control (For HTML5 Videos) */}
-      {type === "video" && !isYouTube && (
-        <button
-          type="button"
-          onClick={toggleSound}
-          title={isMuted ? "Unmute Sound" : "Mute Sound"}
-          className="absolute bottom-6 right-6 z-20 p-3 rounded-full bg-black/60 hover:bg-black/80 border border-white/20 text-white backdrop-blur-md transition-all hover:scale-110 active:scale-95 cursor-pointer shadow-lg"
-        >
-          {isMuted ? (
-            <VolumeX className="w-4 h-4 text-[#9D9DAE]" />
-          ) : (
-            <Volume2 className="w-4 h-4 text-[#E5A93C]" />
-          )}
-        </button>
       )}
     </section>
   );

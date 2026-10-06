@@ -17,8 +17,6 @@ import {
   Link as LinkIcon,
   CheckCircle2,
   ExternalLink,
-  Volume2,
-  VolumeX,
   RotateCcw,
   Eye,
 } from "lucide-react";
@@ -374,36 +372,6 @@ export default function AdminHeroPage() {
                   placeholder="https://res.cloudinary.com/.../video.mp4 or YouTube link"
                   className="bg-[#14141B] border-[#242430]"
                 />
-              </div>
-
-              {/* Sound toggle */}
-              <div className="flex items-center justify-between pt-2 border-t border-[#1C1C26]">
-                <div className="space-y-0.5">
-                  <div className="text-sm font-medium text-white flex items-center gap-1.5">
-                    {isMutedDefault ? (
-                      <VolumeX className="w-4 h-4 text-[#9D9DAE]" />
-                    ) : (
-                      <Volume2 className="w-4 h-4 text-[#E5A93C]" />
-                    )}
-                    Default Muted Autoplay
-                  </div>
-                  <div className="text-xs text-[#9D9DAE]">
-                    Browsers require autoplay videos to be muted by default.
-                  </div>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => setIsMutedDefault(!isMutedDefault)}
-                  className={`w-11 h-6 rounded-full transition-colors relative cursor-pointer ${
-                    isMutedDefault ? "bg-[#E5A93C]" : "bg-[#242430]"
-                  }`}
-                >
-                  <span
-                    className={`block w-4 h-4 rounded-full bg-white transition-transform ${
-                      isMutedDefault ? "translate-x-6" : "translate-x-1"
-                    }`}
-                  />
-                </button>
               </div>
             </div>
           )}

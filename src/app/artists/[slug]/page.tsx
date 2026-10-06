@@ -188,13 +188,13 @@ export default function ArtistDetailPage({ params }: ArtistDetailProps) {
             </div>
 
             <div>
-              <Link
+              {/* <Link
                 href="/artists"
                 className="inline-flex items-center gap-1.5 text-xs text-[#9D9DAE] hover:text-[#E5A93C] mb-2 transition-colors"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Roster Overview</span>
-              </Link>
+              </Link> */}
               <h1 className="text-3xl md:text-5xl font-black text-[#F8F8FA] font-heading tracking-tight">
                 {artistName}
               </h1>
