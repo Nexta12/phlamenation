@@ -511,55 +511,90 @@ export default function AdminHeroPage() {
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-[#9D9DAE] mb-1">
-                  Subheadline
+                <label className="block text-xs font-semibold text-[#9D9DAE] uppercase tracking-wider mb-2">
+                  Subheadline / Supporting Description
                 </label>
-                <Input
+                <Textarea
                   value={subheadline}
                   onChange={(e) => setSubheadline(e.target.value)}
                   placeholder="The frontline of African sonic excellence, world tours, and platinum artistry."
-                  className="bg-[#14141B] border-[#242430]"
+                  rows={2}
+                  className="bg-[#14141B] border-[#242430] text-sm resize-none"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-                <div className="space-y-2">
-                  <label className="block text-xs font-medium text-[#9D9DAE]">
-                    Primary Button (Text & Link)
-                  </label>
-                  <div className="flex gap-2">
-                    <Input
-                      value={primaryCtaText}
-                      onChange={(e) => setPrimaryCtaText(e.target.value)}
-                      placeholder="Listen to Catalogue"
-                      className="bg-[#14141B] border-[#242430] w-1/2"
-                    />
-                    <Input
-                      value={primaryCtaLink}
-                      onChange={(e) => setPrimaryCtaLink(e.target.value)}
-                      placeholder="/music"
-                      className="bg-[#14141B] border-[#242430] w-1/2"
-                    />
+              <div className="space-y-4 pt-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Primary Button */}
+                  <div className="p-4 sm:p-5 rounded-xl bg-[#14141B] border border-[#242430] space-y-4 shadow-sm">
+                    <div className="flex items-center justify-between pb-2 border-b border-[#242430]">
+                      <span className="text-xs font-bold text-[#E5A93C] uppercase tracking-wider">
+                        Primary Button (Main CTA)
+                      </span>
+                      <span className="text-[10px] text-[#6B6B7B] uppercase tracking-wider font-semibold">
+                        Gold Solid
+                      </span>
+                    </div>
+                    <div className="space-y-3.5">
+                      <div>
+                        <label className="block text-xs font-medium text-[#D4D4E2] mb-1.5">
+                          Button Text
+                        </label>
+                        <Input
+                          value={primaryCtaText}
+                          onChange={(e) => setPrimaryCtaText(e.target.value)}
+                          placeholder="e.g. Listen to Catalogue"
+                          className="bg-[#0B0B0F] border-[#2B2B38] text-sm py-2.5 w-full focus:border-[#E5A93C]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-[#D4D4E2] mb-1.5">
+                          Target URL or Page Link
+                        </label>
+                        <Input
+                          value={primaryCtaLink}
+                          onChange={(e) => setPrimaryCtaLink(e.target.value)}
+                          placeholder="e.g. /music or https://..."
+                          className="bg-[#0B0B0F] border-[#2B2B38] text-sm py-2.5 w-full font-mono text-xs focus:border-[#E5A93C]"
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                <div className="space-y-2">
-                  <label className="block text-xs font-medium text-[#9D9DAE]">
-                    Secondary Button (Text & Link)
-                  </label>
-                  <div className="flex gap-2">
-                    <Input
-                      value={secondaryCtaText}
-                      onChange={(e) => setSecondaryCtaText(e.target.value)}
-                      placeholder="Meet the Roster"
-                      className="bg-[#14141B] border-[#242430] w-1/2"
-                    />
-                    <Input
-                      value={secondaryCtaLink}
-                      onChange={(e) => setSecondaryCtaLink(e.target.value)}
-                      placeholder="/artists"
-                      className="bg-[#14141B] border-[#242430] w-1/2"
-                    />
+                  {/* Secondary Button */}
+                  <div className="p-4 sm:p-5 rounded-xl bg-[#14141B] border border-[#242430] space-y-4 shadow-sm">
+                    <div className="flex items-center justify-between pb-2 border-b border-[#242430]">
+                      <span className="text-xs font-bold text-white uppercase tracking-wider">
+                        Secondary Button (Supporting CTA)
+                      </span>
+                      <span className="text-[10px] text-[#6B6B7B] uppercase tracking-wider font-semibold">
+                        Glass Outline
+                      </span>
+                    </div>
+                    <div className="space-y-3.5">
+                      <div>
+                        <label className="block text-xs font-medium text-[#D4D4E2] mb-1.5">
+                          Button Text
+                        </label>
+                        <Input
+                          value={secondaryCtaText}
+                          onChange={(e) => setSecondaryCtaText(e.target.value)}
+                          placeholder="e.g. Meet the Roster"
+                          className="bg-[#0B0B0F] border-[#2B2B38] text-sm py-2.5 w-full focus:border-[#E5A93C]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-medium text-[#D4D4E2] mb-1.5">
+                          Target URL or Page Link
+                        </label>
+                        <Input
+                          value={secondaryCtaLink}
+                          onChange={(e) => setSecondaryCtaLink(e.target.value)}
+                          placeholder="e.g. /artists or https://..."
+                          className="bg-[#0B0B0F] border-[#2B2B38] text-sm py-2.5 w-full font-mono text-xs focus:border-[#E5A93C]"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
