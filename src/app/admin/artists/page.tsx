@@ -10,6 +10,7 @@ import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { useUIStore } from "@/stores/useUIStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import ArtistSocialLinks from "@/components/shared/ArtistSocialLinks";
 import {
   Plus,
@@ -30,6 +31,7 @@ import {
 } from "lucide-react";
 
 export default function AdminArtistsPage() {
+  const { confirmDelete } = useConfirmDialog();
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -340,12 +342,15 @@ export default function AdminArtistsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (
-      !confirm(
-        "Are you sure you want to delete this artist? All connected tracks, videos, galleries, events, and photos will also be permanently deleted."
-      )
-    )
-      return;
+    const targetArtist = artists.find((a) => a._id === id);
+    const confirmed = await confirmDelete({
+      title: "Delete Artist",
+      itemName: targetArtist?.stageName || targetArtist?.name,
+      message:
+        "Are you sure you want to delete this artist? All connected tracks, videos, galleries, events, and photos will also be permanently deleted.",
+      confirmText: "Delete Artist",
+    });
+    if (!confirmed) return;
     try {
       setIsDeleting(id);
       await artistService.deleteArtist(id);
@@ -787,7 +792,7 @@ export default function AdminArtistsPage() {
                   onChange={(e) => setEditFormData({ ...editFormData, status: e.target.value })}
                   options={[
                     { label: "Active (Current Roster)", value: "active" },
-                    { label: "Signed (In Studio / Development)", value: "signed" },
+                    { label: "Signed (Under Development)", value: "signed" },
                     { label: "Alumni (Legacy Roster)", value: "alumni" },
                   ]}
                 />

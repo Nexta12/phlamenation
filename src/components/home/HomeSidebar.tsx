@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { News } from "@/types";
 import api from "@/services/api";
-import BannerWidget from "@/components/widgets/BannerWidget";
 import {
   Flame,
   ArrowRight,
@@ -96,12 +95,7 @@ export const HomeSidebar: React.FC = () => {
         </Link>
       ))}
 
-      {/* 2. Embedded Active Promo / Announcement Widget */}
-      <div className="my-1">
-        <BannerWidget placement="sidebar_widget" />
-      </div>
-
-      {/* 3. Published Articles & News Feed */}
+      {/* 2. Published Articles & News Feed */}
       {recentNews.map((article) => {
         const coverUrl =
           article.coverImage?.url ||

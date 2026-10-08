@@ -11,14 +11,13 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Phlame Nation | Global Music & Entertainment Powerhouse",
   description:
-    "Official portal for Phlame Nation Record Label. Discover new music releases, watch official music videos, stream audio, book studio sessions, and explore tour dates.",
+    "Official portal for Phlame Nation Record Label. Discover new music releases, watch official music videos, stream audio, and explore tour dates.",
   keywords: [
     "Phlame Nation",
     "Music Label",
     "Afrobeats",
     "Music Streaming",
     "Audio Download",
-    "Studio Booking",
     "Tour Dates",
   ],
   icons: {

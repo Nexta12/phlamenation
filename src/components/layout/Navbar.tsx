@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useUIStore } from "@/stores/useUIStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 import {
   Menu,
   X,
@@ -26,6 +27,7 @@ export const Navbar: React.FC = () => {
   const router = useRouter();
   const { user, isAuthenticated, checkAuth, logout } = useAuthStore();
   const { mobileMenuOpen, setMobileMenuOpen } = useUIStore();
+  const { unreadMessagesCount } = useNotificationStore();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -82,9 +84,10 @@ export const Navbar: React.FC = () => {
 
   const adminMenuItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { label: "Messages", href: "/admin/contacts", icon: Inbox },
     { label: "Music & Tracks", href: "/admin/tracks", icon: Music2 },
     { label: "Artist Roster", href: "/admin/artists", icon: Users },
-    { label: "Inquiries & Inbox", href: "/admin/contacts", icon: Inbox },
+  
   ];
 
   const isAdmin = user && ["superAdmin", "admin", "editor"].includes(user.role);
@@ -110,19 +113,27 @@ export const Navbar: React.FC = () => {
           {adminMenuItems.map((item) => {
             const Icon = item.icon;
             const isItemActive = pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
+            const isMessages = item.href === "/admin/contacts";
             return (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={() => setUserMenuOpen(false)}
-                className={`flex items-center space-x-2.5 px-3 py-2 rounded-lg text-xs transition-colors group ${
+                className={`flex items-center justify-between px-3 py-2 rounded-lg text-xs transition-colors group ${
                   isItemActive
                     ? "bg-[#E5A93C]/15 text-[#E5A93C] font-semibold border border-[#E5A93C]/20"
                     : "text-zinc-300 hover:text-white hover:bg-white/5"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isItemActive ? "text-[#E5A93C]" : "text-[#E5A93C]/70 group-hover:text-[#E5A93C]"} group-hover:scale-110 transition-transform`} />
-                <span>{item.label}</span>
+                <div className="flex items-center space-x-2.5">
+                  <Icon className={`w-3.5 h-3.5 ${isItemActive ? "text-[#E5A93C]" : "text-[#E5A93C]/70 group-hover:text-[#E5A93C]"} group-hover:scale-110 transition-transform`} />
+                  <span>{item.label}</span>
+                </div>
+                {isMessages && unreadMessagesCount > 0 && (
+                  <span className="flex items-center justify-center min-w-[18px] h-4.5 px-1.5 text-[10px] font-bold text-white bg-red-600 rounded-full shadow-sm animate-pulse">
+                    {unreadMessagesCount > 99 ? "99+" : unreadMessagesCount}
+                  </span>
+                )}
               </Link>
             );
           })}
@@ -208,7 +219,7 @@ export const Navbar: React.FC = () => {
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   aria-label="User account menu"
-                  className={`w-9 h-9 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
+                  className={`relative w-9 h-9 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
                     userMenuOpen
                       ? "bg-[#E5A93C] text-black border-[#E5A93C] shadow-lg shadow-[#E5A93C]/20"
                       : "bg-[#16161E] text-[#F8F8FA] hover:text-[#E5A93C] border-white/10 hover:border-[#E5A93C]/40"
@@ -216,6 +227,12 @@ export const Navbar: React.FC = () => {
                   title={displayName}
                 >
                   <User className="w-4 h-4" />
+                  {isAdmin && unreadMessagesCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-600 border border-[#08080A]"></span>
+                    </span>
+                  )}
                 </button>
                 {userMenuOpen && renderDropdown()}
               </div>
@@ -236,7 +253,7 @@ export const Navbar: React.FC = () => {
                 <button
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   aria-label="User account menu"
-                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
+                  className={`relative w-8 h-8 rounded-full flex items-center justify-center transition-all cursor-pointer border ${
                     userMenuOpen
                       ? "bg-[#E5A93C] text-black border-[#E5A93C]"
                       : "bg-[#16161E] text-[#F8F8FA] border-white/10"
@@ -244,6 +261,12 @@ export const Navbar: React.FC = () => {
                   title={displayName}
                 >
                   <User className="w-4 h-4" />
+                  {isAdmin && unreadMessagesCount > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-600 border border-[#08080A]"></span>
+                    </span>
+                  )}
                 </button>
                 {userMenuOpen && renderDropdown()}
               </div>

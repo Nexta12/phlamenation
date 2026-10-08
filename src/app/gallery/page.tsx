@@ -52,7 +52,7 @@ export default function GalleryPage() {
             Press, Moments & <span className="text-primary">Aesthetics</span>
           </h1>
           <p className="max-w-2xl mx-auto text-muted-foreground text-lg font-light leading-relaxed">
-            Curated high-resolution imagery documenting stadium tours, album cover creation, intimate studio sessions, and the global cultural footprint of Phlame Nation.
+            Curated high-resolution imagery documenting stadium tours, album cover creation, exclusive behind-the-scenes moments, and the global cultural footprint of Phlame Nation.
           </p>
 
           {/* Category Tabs */}

@@ -105,7 +105,7 @@ export const HeroVideo: React.FC<HeroVideoProps> = ({ initialConfig }) => {
   const secondaryCtaLink = hero?.secondaryCtaLink || "/artists";
 
   return (
-    <section className="relative w-full h-[85vh] sm:h-screen min-h-[640px] overflow-hidden bg-black flex items-center justify-center">
+    <section className="relative w-full h-[55vh] sm:h-[75vh] md:h-screen min-h-[380px] sm:min-h-[520px] md:min-h-[640px] overflow-hidden bg-black flex items-center justify-center">
       {/* 1. Preloader Screen: Phlame Nation Logo displayed until media is ready */}
       <div
         className={`absolute inset-0 z-30 flex flex-col items-center justify-center bg-black transition-opacity duration-1000 ${

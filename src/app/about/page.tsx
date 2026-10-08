@@ -69,7 +69,7 @@ export default function AboutPage() {
               Collaborate With Phlame Nation
             </h2>
             <p className="text-xs sm:text-sm text-[#9D9DAE]">
-              Book studio sessions, inquire about sync licensing, or discuss brand partnerships.
+              Inquire about sync licensing, artist bookings, or discuss brand partnerships.
             </p>
           </div>
           <div className="flex items-center gap-3">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuthStore } from "@/stores/useAuthStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
 import { Badge } from "@/components/ui/Badge";
 import {
   Flame,
@@ -13,10 +14,8 @@ import {
   Users,
   Video,
   Calendar,
-  Mic,
   Newspaper,
   Inbox,
-  LayoutTemplate,
   LogOut,
   Menu,
   X,
@@ -30,6 +29,7 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const { user, isAuthenticated, isLoading, hydrateAuth, checkAuth, logout } = useAuthStore();
+  const { unreadMessagesCount } = useNotificationStore();
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
@@ -90,12 +90,10 @@ export default function AdminLayout({
     if (path.startsWith("/admin/tracks")) return "Tracks";
     if (path.startsWith("/admin/artists")) return "Artists";
     if (path.startsWith("/admin/videos")) return "Videos";
-    if (path.startsWith("/admin/studios")) return "Studios";
     if (path.startsWith("/admin/news")) return "News";
     if (path.startsWith("/admin/contacts")) return "Inquiries";
     if (path.startsWith("/admin/hero")) return "Hero Showcase";
     if (path.startsWith("/admin/users")) return "User Access & Roles";
-    if (path.startsWith("/admin/widgets")) return "Widgets";
     if (path.startsWith("/admin/gallery")) return "Gallery";
     if (path.startsWith("/admin/newsletter")) return "Newsletter";
 
@@ -105,15 +103,13 @@ export default function AdminLayout({
 
   const navItems = [
     { label: "Dashboard", href: "/admin", icon: LayoutDashboard },
+      { label: "Messages", href: "/admin/contacts", icon: Inbox },
     { label: "Users", href: "/admin/users", icon: UserCheck },
     { label: "Music & Tracks", href: "/admin/tracks", icon: Music2 },
     { label: "Artists", href: "/admin/artists", icon: Users },
     { label: "Music Videos", href: "/admin/videos", icon: Video },
     { label: "Tours & Shows", href: "/admin/events", icon: Calendar },
-    { label: "Studio Bookings", href: "/admin/studios", icon: Mic },
     { label: "News & Dispatches", href: "/admin/news", icon: Newspaper },
-    { label: "Inquiries & Inbox", href: "/admin/contacts", icon: Inbox },
-    { label: "Promo Widgets", href: "/admin/widgets", icon: LayoutTemplate },
     { label: "Hero Section", href: "/admin/hero", icon: Flame },
   ];
 
@@ -192,9 +188,12 @@ export default function AdminLayout({
           </div>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-white/5 border border-white/10 text-white cursor-pointer"
+            className="relative p-2 rounded-lg bg-white/5 border border-white/10 text-white cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            {unreadMessagesCount > 0 && !mobileMenuOpen && (
+              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-600 rounded-full ring-2 ring-[#060608] animate-pulse" />
+            )}
           </button>
         </div>
       </div>
@@ -230,19 +229,33 @@ export default function AdminLayout({
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = pathname === item.href;
+              const isMessages = item.href === "/admin/contacts";
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all ${
+                  className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-semibold tracking-wide transition-all ${
                     isActive
                       ? "bg-primary text-black font-bold shadow-md shadow-primary/10"
                       : "text-muted-foreground hover:text-white hover:bg-white/5"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? "text-black" : "text-zinc-400"}`} />
-                  <span>{item.label}</span>
+                  <div className="flex items-center space-x-3 min-w-0">
+                    <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-black" : "text-zinc-400"}`} />
+                    <span className="truncate">{item.label}</span>
+                  </div>
+                  {isMessages && unreadMessagesCount > 0 && (
+                    <span
+                      className={`flex items-center justify-center min-w-[20px] h-5 px-1.5 text-[10px] font-extrabold rounded-full shadow-sm shrink-0 ${
+                        isActive
+                          ? "bg-black text-white"
+                          : "bg-red-600 text-white animate-pulse"
+                      }`}
+                    >
+                      {unreadMessagesCount > 99 ? "99+" : unreadMessagesCount}
+                    </span>
+                  )}
                 </Link>
               );
             })}
@@ -261,8 +274,24 @@ export default function AdminLayout({
             </h1>
           </div>
 
-          {/* Top Right: User Profile with Click-Outside Dropdown */}
-          <div className="relative" ref={desktopProfileRef}>
+          {/* Top Right: Actions & User Profile */}
+          <div className="flex items-center space-x-3">
+            {/* Quick Messages Inbox Button with Badge */}
+            <Link
+              href="/admin/contacts"
+              className="relative p-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors"
+              title="Inquiries & Messages"
+            >
+              <Inbox className="w-5 h-5" />
+              {unreadMessagesCount > 0 && (
+                <span className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white bg-red-600 rounded-full shadow-sm animate-pulse">
+                  {unreadMessagesCount > 99 ? "99+" : unreadMessagesCount}
+                </span>
+              )}
+            </Link>
+
+            {/* User Profile with Click-Outside Dropdown */}
+            <div className="relative" ref={desktopProfileRef}>
             <button
               onClick={() => setProfileMenuOpen(!profileMenuOpen)}
               className="flex items-center space-x-3 p-1.5 pr-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 transition-all cursor-pointer select-none"
@@ -288,7 +317,8 @@ export default function AdminLayout({
             {/* Profile Dropdown Menu */}
             {profileMenuOpen && renderProfileDropdown()}
           </div>
-        </header>
+        </div>
+      </header>
 
         {/* Content Body */}
         <main className="p-4 sm:p-6 lg:p-8 flex-1">

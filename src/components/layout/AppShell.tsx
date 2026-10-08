@@ -8,8 +8,12 @@ import FloatingPlayer from "@/components/player/FloatingPlayer";
 import VideoModal from "@/components/shared/VideoModal";
 import RequestShowModal from "@/components/shared/RequestShowModal";
 import ToastContainer from "@/components/ui/ToastContainer";
+import { useContactNotifications } from "@/hooks/useContactNotifications";
+
+import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  useContactNotifications();
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
   const isAuth =
@@ -25,6 +29,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {children}
         <VideoModal />
         <ToastContainer />
+        <DeleteConfirmModal />
       </div>
     );
   }
@@ -38,6 +43,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <VideoModal />
       <RequestShowModal />
       <ToastContainer />
+      <DeleteConfirmModal />
     </>
   );
 }

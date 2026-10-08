@@ -6,11 +6,8 @@ import {
   EventItem,
   GalleryItem,
   NewsArticle,
-  StudioRoom,
-  StudioBooking,
   ContactMessage,
   NewsletterSubscriber,
-  Widget,
   User,
   HeroConfig,
 } from "@/types";
@@ -251,21 +248,10 @@ export const newsService = {
   deleteNews: (id: string) => api.delete(`/news/${id}`),
 };
 
-export const studioService = {
-  getRooms: () => api.get<StudioRoom[]>("/studios/rooms"),
-  getRoom: (id: string) => api.get<StudioRoom>(`/studios/rooms/${id}`),
-  bookSession: (data: any) => api.post<StudioBooking>("/studios/book", data),
-  getBookings: () => api.get<StudioBooking[]>("/studios/bookings"),
-  updateBookingStatus: (id: string, data: { status: string; adminNotes?: string }) =>
-    api.patch<StudioBooking>(`/studios/bookings/${id}`, data),
-  createRoom: (data: FormData) => api.post<StudioRoom>("/studios/rooms", data),
-  updateRoom: (id: string, data: FormData) => api.patch<StudioRoom>(`/studios/rooms/${id}`, data),
-  deleteRoom: (id: string) => api.delete(`/studios/rooms/${id}`),
-};
-
 export const contactService = {
   submitMessage: (data: any) => api.post<ContactMessage>("/contacts", data),
   getMessages: (params?: Record<string, any>) => api.get<ContactMessage[]>("/contacts", params),
+  getUnreadCount: () => api.get<{ unreadCount: number }>("/contacts/unread-count"),
   getMessage: (id: string) => api.get<ContactMessage>(`/contacts/${id}`),
   updateStatus: (id: string, data: { status: "unread" | "read" | "replied" | "archived"; adminNotes?: string }) =>
     api.patch<ContactMessage>(`/contacts/${id}`, data),
@@ -285,14 +271,6 @@ export const userService = {
   updateUser: (id: string, data: Partial<{ fullName: string; email: string; password?: string; role: string; isVerified?: boolean }>) =>
     api.patch<User>(`/auth/users/${id}`, data),
   deleteUser: (id: string) => api.delete<{ message: string }>(`/auth/users/${id}`),
-};
-
-export const widgetService = {
-  getWidgets: (params?: Record<string, any>) => api.get<Widget[]>("/widgets", params),
-  getActiveWidget: (position: string) => api.get<Widget>(`/widgets/active?position=${position}`),
-  createWidget: (data: FormData) => api.post<Widget>("/widgets", data),
-  updateWidget: (id: string, data: FormData) => api.patch<Widget>(`/widgets/${id}`, data),
-  deleteWidget: (id: string) => api.delete(`/widgets/${id}`),
 };
 
 export const heroService = {

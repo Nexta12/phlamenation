@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { useUIStore } from "@/stores/useUIStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import { Plus, Newspaper, Trash2, Zap, Calendar, ExternalLink, Pencil } from "lucide-react";
 
 export default function AdminNewsPage() {
@@ -19,6 +20,7 @@ export default function AdminNewsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const { addToast } = useUIStore();
+  const { confirmDelete } = useConfirmDialog();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -176,7 +178,14 @@ export default function AdminNewsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to remove this dispatch?")) return;
+    const targetArticle = articles.find((a) => a._id === id);
+    const confirmed = await confirmDelete({
+      title: "Delete Dispatch",
+      itemName: targetArticle?.title,
+      message: "Are you sure you want to delete and unpublish this news dispatch?",
+      confirmText: "Delete Dispatch",
+    });
+    if (!confirmed) return;
     try {
       setIsDeleting(id);
       await newsService.deleteNews(id);

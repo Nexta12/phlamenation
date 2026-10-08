@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { useUIStore } from "@/stores/useUIStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import {
   Plus,
   Video as VideoIcon,
@@ -38,6 +39,7 @@ function extractYouTubeId(url: string): string | null {
 }
 
 export default function AdminVideosPage() {
+  const { confirmDelete } = useConfirmDialog();
   const [videos, setVideos] = useState<Video[]>([]);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
@@ -266,7 +268,14 @@ export default function AdminVideosPage() {
 
   // Delete Video
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to permanently delete this video?")) return;
+    const targetVideo = videos.find((v) => v._id === id);
+    const confirmed = await confirmDelete({
+      title: "Delete Video",
+      itemName: targetVideo?.title,
+      message: "Are you sure you want to permanently delete this video from the catalogue?",
+      confirmText: "Delete Video",
+    });
+    if (!confirmed) return;
     try {
       setIsDeleting(id);
       await videoService.deleteVideo(id);

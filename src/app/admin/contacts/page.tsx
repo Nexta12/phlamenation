@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { useUIStore } from "@/stores/useUIStore";
+import { useNotificationStore } from "@/stores/useNotificationStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import { Inbox, Mail, Phone, Calendar, Trash2, CheckCircle2, MessageSquare } from "lucide-react";
 
 export default function AdminContactsPage() {
@@ -19,12 +21,15 @@ export default function AdminContactsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const { addToast } = useUIStore();
+  const { fetchUnreadCount } = useNotificationStore();
+  const { confirmDelete } = useConfirmDialog();
 
   const loadMessages = async () => {
     try {
       setLoading(true);
       const res = await contactService.getMessages();
       if (res.data) setMessages(res.data);
+      fetchUnreadCount();
     } catch (err) {
       console.error("Failed to load contacts:", err);
     } finally {
@@ -36,10 +41,21 @@ export default function AdminContactsPage() {
     loadMessages();
   }, []);
 
-  const openMessage = (msg: ContactMessage) => {
+  const openMessage = async (msg: ContactMessage) => {
     setSelectedMessage(msg);
     setStatus(msg.status || "read");
     setAdminNotes(msg.adminNotes || "");
+    if (msg.status === "unread") {
+      try {
+        await contactService.getMessage(msg._id);
+        setMessages((prev) =>
+          prev.map((m) => (m._id === msg._id ? { ...m, status: "read" } : m))
+        );
+        fetchUnreadCount();
+      } catch {
+        // ignore
+      }
+    }
   };
 
   const handleUpdate = async (e: React.FormEvent) => {
@@ -72,13 +88,21 @@ export default function AdminContactsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Permanently delete this inquiry from the record?")) return;
+    const targetMsg = messages.find((m) => m._id === id);
+    const confirmed = await confirmDelete({
+      title: "Delete Inquiry",
+      itemName: targetMsg ? `${targetMsg.name} ("${targetMsg.subject}")` : undefined,
+      message: "Are you sure you want to permanently delete this message from the record?",
+      confirmText: "Delete Inquiry",
+    });
+    if (!confirmed) return;
     try {
       setIsDeleting(id);
       await contactService.deleteMessage(id);
       addToast({ title: "Inquiry Deleted", message: "Message removed from inbox.", type: "success" });
       setMessages(messages.filter((m) => m._id !== id));
       if (selectedMessage?._id === id) setSelectedMessage(null);
+      fetchUnreadCount();
     } catch (err: any) {
       addToast({ title: "Error", message: err.response?.data?.message || "Could not delete inquiry.", type: "error" });
     } finally {
@@ -92,11 +116,9 @@ export default function AdminContactsPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-border">
         <div>
           <h1 className="text-xl font-bold text-white tracking-tight">
-            Communications <span className="text-primary">Inbox</span>
+            Inbox <span className="text-primary">Messages</span>
           </h1>
-          <p className="text-xs text-muted-foreground mt-1">
-            Review incoming executive inquiries, booking offers, press applications, and A&R submissions.
-          </p>
+        
         </div>
       </div>
 

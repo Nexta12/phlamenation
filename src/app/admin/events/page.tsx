@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { useUIStore } from "@/stores/useUIStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import { Plus, Calendar, MapPin, Trash2, ExternalLink, Ticket, Users, TrendingUp, Pencil } from "lucide-react";
 
 export default function AdminEventsPage() {
@@ -22,6 +23,7 @@ export default function AdminEventsPage() {
   const [isDeleting, setIsDeleting] = useState<string | null>(null);
 
   const { addToast } = useUIStore();
+  const { confirmDelete } = useConfirmDialog();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -223,7 +225,14 @@ export default function AdminEventsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to cancel and remove this tour date?")) return;
+    const targetEvent = events.find((e) => e._id === id);
+    const confirmed = await confirmDelete({
+      title: "Remove Tour Date",
+      itemName: targetEvent ? `${targetEvent.title} • ${targetEvent.city || targetEvent.venue}` : undefined,
+      message: "Are you sure you want to cancel and remove this tour date from the schedule?",
+      confirmText: "Remove Tour Date",
+    });
+    if (!confirmed) return;
     try {
       setIsDeleting(id);
       await eventService.deleteEvent(id);

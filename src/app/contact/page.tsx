@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { useUIStore } from "@/stores/useUIStore";
-import { Mail, Phone, MapPin, Send, CheckCircle2, Music, ShieldCheck } from "lucide-react";
+import { Mail, Phone, MapPin, Send, CheckCircle2, } from "lucide-react";
 
 export default function ContactPage() {
   const [submitting, setSubmitting] = useState(false);
@@ -74,7 +74,7 @@ export default function ContactPage() {
           {/* Left Column: Headquarters & Direct Channels */}
           <div className="lg:col-span-5 space-y-8">
             <div>
-              <h2 className="text-2xl font-bold text-white mb-3">Global Headquarters</h2>
+              <h2 className="text-2xl font-bold text-white mb-3">Office Locations </h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
                 Phlame Nation operates production hubs across key cultural music capitals.
               </p>
@@ -86,11 +86,11 @@ export default function ContactPage() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Lagos HQ & Soundstage</h3>
+                  <h3 className="text-base font-bold text-white">Lagos, Nigeria</h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Plot 14 Victoria Island, Lagos, Nigeria
+                    Lekki, Lagos, Nigeria
                   </p>
-                  <p className="text-xs text-primary font-medium mt-2">+234 1 800 PHLAME</p>
+                  <p className="text-xs text-primary font-medium mt-2">+234 701 421 4883</p>
                 </div>
               </div>
 
@@ -99,11 +99,23 @@ export default function ContactPage() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">London Bureau</h3>
+                  <h3 className="text-base font-bold text-white">Miami, FLorida, USA</h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    18 Soho Square, London W1D 3QL, United Kingdom
+                    Miami, FLorida, USA
                   </p>
-                  <p className="text-xs text-primary font-medium mt-2">+44 20 7946 0991</p>
+                  <p className="text-xs text-primary font-medium mt-2">+1 (954) 298-2766</p>
+                </div>
+              </div>
+              <div className="p-6 bg-surface border border-border rounded-2xl flex items-start space-x-4">
+                <div className="p-3 bg-primary/10 text-primary rounded-xl shrink-0">
+                  <MapPin className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">California, USA</h3>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    California, USA
+                  </p>
+                  <p className="text-xs text-primary font-medium mt-2">+1 (954) 298-2766</p>
                 </div>
               </div>
 
@@ -112,26 +124,15 @@ export default function ContactPage() {
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Direct Departments</h3>
+                  <h3 className="text-base font-bold text-white">Direct Inquiries</h3>
                   <div className="text-xs text-muted-foreground mt-2 space-y-1">
-                    <p><span className="text-zinc-400 font-semibold">Artist Bookings:</span> bookings@phlamenation.com</p>
-                    <p><span className="text-zinc-400 font-semibold">Press & Media:</span> press@phlamenation.com</p>
-                    <p><span className="text-zinc-400 font-semibold">A&R / Demos:</span> ar@phlamenation.com</p>
+                    <p><span className="text-zinc-400 font-semibold">Email:</span> info@phlamenation.com</p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Demo Policy Callout */}
-            <div className="p-6 bg-primary/5 border border-primary/20 rounded-2xl">
-              <div className="flex items-center space-x-2 text-primary font-bold text-sm mb-2">
-                <Music className="w-4 h-4" />
-                <span>Demo Submissions Policy</span>
-              </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Please submit streaming links (SoundCloud private link, Spotify, Dropbox/Drive). Do not send raw MP3/WAV email attachments. Our A&R team actively listens to all formatted inquiries.
-              </p>
-            </div>
+          
           </div>
 
           {/* Right Column: Contact Form */}
@@ -140,7 +141,7 @@ export default function ContactPage() {
               {submitted ? (
                 <div className="py-16 text-center">
                   <CheckCircle2 className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                  <h3 className="text-2xl font-bold text-white mb-2">Inquiry Successfully Dispatched</h3>
+                  <h3 className="text-2xl font-bold text-white mb-2">Message Sent</h3>
                   <p className="text-muted-foreground max-w-md mx-auto mb-6 text-sm">
                     Thank you for reaching out to Phlame Nation. A dedicated label representative will review your message and reply via email shortly.
                   </p>
@@ -152,15 +153,12 @@ export default function ContactPage() {
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div className="border-b border-border pb-4 mb-2">
                     <h3 className="text-xl font-bold text-white">Drop A Message</h3>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      Fill out the form below. All messages are securely routed to label executive inboxes.
-                    </p>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
-                      label="Your Name / Organization"
-                      placeholder="e.g. John Doe / Live Nation"
+                      label="Your Name"
+                      placeholder="Your Name"
                       required
                       value={form.name}
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
@@ -168,7 +166,7 @@ export default function ContactPage() {
                     <Input
                       label="Email Address"
                       type="email"
-                      placeholder="you@domain.com"
+                      placeholder="Email"
                       required
                       value={form.email}
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -178,7 +176,7 @@ export default function ContactPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <Input
                       label="Phone Number (Optional)"
-                      placeholder="+1 (555) 000-0000"
+                      placeholder=""
                       value={form.phone}
                       onChange={(e) => setForm({ ...form, phone: e.target.value })}
                     />
@@ -198,7 +196,7 @@ export default function ContactPage() {
 
                   <Input
                     label="Subject"
-                    placeholder="e.g. Festival Headliner Booking Proposal"
+                    placeholder="Write your subject here..."
                     required
                     value={form.subject}
                     onChange={(e) => setForm({ ...form, subject: e.target.value })}
@@ -212,17 +210,18 @@ export default function ContactPage() {
                       rows={5}
                       required
                       className="w-full bg-background border border-border rounded-xl px-4 py-3 text-sm text-foreground focus:outline-none focus:border-primary transition-colors"
-                      placeholder="Provide full context, dates, streaming links, or proposal terms..."
+                      placeholder="Write your message here..."
                       value={form.message}
                       onChange={(e) => setForm({ ...form, message: e.target.value })}
                     />
                   </div>
 
                   <div className="flex items-center justify-between pt-4 border-t border-border">
+
                     <div className="flex items-center text-xs text-muted-foreground">
-                      <ShieldCheck className="w-4 h-4 mr-1 text-primary" />
-                      <span>Encrypted direct dispatch</span>
+                     
                     </div>
+
                     <Button variant="primary" type="submit" disabled={submitting}>
                       {submitting ? "Sending..." : "Send Message"}
                     </Button>

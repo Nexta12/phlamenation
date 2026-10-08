@@ -57,6 +57,7 @@ export interface Track {
   title: string;
   slug?: string;
   artist?: Artist | any;
+  artistName?: string;
   primaryArtist?: Artist | string;
   featuredArtists?: (Artist | string)[];
   featuredArtistsText?: string;
@@ -151,27 +152,6 @@ export interface News {
 
 export type NewsArticle = News;
 
-export interface Widget {
-  _id: string;
-  title: string;
-  type?: "banner" | "modal_popup" | "flash_sale" | "tour_alert" | string;
-  placement?: "header_banner" | "sidebar_widget" | "popup_modal" | "footer_sponsor" | "in_feed" | string;
-  position?: "top_bar" | "hero_bottom" | "floating_corner" | "footer_banner" | string;
-  image?: { url: string; publicId?: string };
-  targetUrl?: string;
-  ctaText?: string;
-  ctaLink?: string;
-  altText?: string;
-  headline?: string;
-  content?: string;
-  description?: string;
-  buttonText?: string;
-  isActive?: boolean;
-  priority?: number;
-  impressionCount?: number;
-  clickCount?: number;
-}
-
 export interface TourEvent {
   _id: string;
   title: string;
@@ -194,33 +174,6 @@ export interface TourEvent {
 }
 
 export type EventItem = TourEvent;
-
-export interface StudioRoom {
-  _id: string;
-  name: string;
-  slug?: string;
-  type: "recording_studio" | "podcast_studio" | "rehearsal_space" | "mastering_suite" | "mobile_studio" | string;
-  description?: string;
-  hourlyRate?: number;
-  features?: string[];
-  images?: { url?: string; secure_url?: string; publicId?: string }[];
-  isActive?: boolean;
-}
-
-export interface StudioBooking {
-  _id: string;
-  studioRoom: StudioRoom | any;
-  clientName: string;
-  clientEmail: string;
-  clientPhone: string;
-  producerName?: string;
-  projectDescription: string;
-  requestedDate: string;
-  sessionHours: number;
-  status: "pending" | "confirmed" | "completed" | "cancelled" | string;
-  adminNotes?: string;
-  createdAt?: string;
-}
 
 export interface ContactMessage {
   _id: string;

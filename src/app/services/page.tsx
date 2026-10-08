@@ -1,23 +1,23 @@
 import React from "react";
 import Link from "next/link";
 import Button from "@/components/ui/Button";
-import { Mic2, Radio, Disc3, Calendar, ArrowRight, ExternalLink, Headphones } from "lucide-react";
+import { Globe, Radio, Disc3, Calendar, ArrowRight, ExternalLink, Headphones } from "lucide-react";
 
 export const metadata = {
   title: "Services | Phlame Nation Record Label",
   description:
-    "Explore Phlame Nation services: Recording Studios, Dolby Atmos Mixing, Global Distribution, Artist Management, and Sync Licensing.",
+    "Explore Phlame Nation services: Global Music Distribution, Sync Licensing, Artist Management, Live Concert Staging, and Audio Engineering.",
 };
 
 export default function ServicesPage() {
   const services = [
     {
-      title: "Recording Studios & Sound Labs",
+      title: "Global Music Distribution & Publishing",
       description:
-        "World-class tracking and mixing suites powered by Neve consoles, Neumann mics, and Dolby Atmos certified acousticians.",
-      link: "/studios",
-      cta: "Book Studio Session",
-      icon: Mic2,
+        "Direct-to-platform digital streaming distribution, rights management, metadata optimization, and global playlist pitching across 150+ territories.",
+      link: "/contact",
+      cta: "Inquire Distribution",
+      icon: Globe,
     },
     {
       title: "Sync & Commercial Licensing",
@@ -44,11 +44,11 @@ export default function ServicesPage() {
       icon: Calendar,
     },
     {
-      title: "Mixing & Mastering Engineering",
+      title: "Audio Engineering & Post-Production",
       description:
-        "Multi-track analog and digital mastering engineered to international streaming standards across Spotify, Apple Music, and vinyl.",
-      link: "/studios",
-      cta: "Reserve Engineering",
+        "Multi-track analog and digital mastering engineered to international broadcast and streaming standards across Spotify, Apple Music, and Dolby Atmos.",
+      link: "/contact",
+      cta: "Contact Audio Team",
       icon: Headphones,
     },
   ];
@@ -68,7 +68,7 @@ export default function ServicesPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-[#9D9DAE] max-w-2xl leading-relaxed">
-            From residential studio facilities to global sync licensing, explore our suite of entertainment and production services.
+            From global distribution to sync licensing, explore our suite of entertainment and production services.
           </p>
         </div>
 

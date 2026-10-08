@@ -9,6 +9,7 @@ import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
 import { useUIStore } from "@/stores/useUIStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import {
   Plus,
   Play,
@@ -29,6 +30,7 @@ import {
 import TrackStreamingLinks from "@/components/shared/TrackStreamingLinks";
 
 export default function AdminTracksPage() {
+  const { confirmDelete } = useConfirmDialog();
   const [tracks, setTracks] = useState<Track[]>([]);
   const [artists, setArtists] = useState<Artist[]>([]);
   const [loading, setLoading] = useState(true);
@@ -332,7 +334,21 @@ export default function AdminTracksPage() {
   };
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to permanently delete this track from the catalogue?")) return;
+    const targetTrack = tracks.find((t) => t._id === id);
+    const artistDisplayName =
+      targetTrack?.artist?.name ||
+      (typeof targetTrack?.primaryArtist === "object"
+        ? targetTrack.primaryArtist?.name
+        : targetTrack?.artistName);
+    const confirmed = await confirmDelete({
+      title: "Delete Track",
+      itemName: targetTrack
+        ? `${targetTrack.title}${artistDisplayName ? ` (${artistDisplayName})` : ""}`
+        : undefined,
+      message: "Are you sure you want to permanently delete this track from the catalogue?",
+      confirmText: "Delete Track",
+    });
+    if (!confirmed) return;
     try {
       setIsDeleting(id);
       await trackService.deleteTrack(id);

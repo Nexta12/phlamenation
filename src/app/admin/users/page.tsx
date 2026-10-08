@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Badge } from "@/components/ui/Badge";
 import { Modal } from "@/components/ui/Modal";
+import DeleteConfirmModal from "@/components/ui/DeleteConfirmModal";
 import {
   Users,
   UserCheck,
@@ -538,38 +539,16 @@ export default function AdminUsersPage() {
       </Modal>
 
       {/* Delete Confirmation Modal */}
-      <Modal
-        isOpen={!!userToDelete}
+      <DeleteConfirmModal
+        isOpen={Boolean(userToDelete)}
         onClose={() => setUserToDelete(null)}
+        onConfirm={handleDeleteUser}
         title="Confirm User Deletion"
-      >
-        <div className="space-y-4">
-          <div className="flex items-start space-x-3 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-300 text-xs">
-            <AlertTriangle className="w-5 h-5 shrink-0 text-red-400 mt-0.5" />
-            <div>
-              <p className="font-bold text-white">
-                Are you sure you want to permanently delete this user?
-              </p>
-              <p className="mt-1 text-red-200/80">
-                This will revoke all portal access and permissions for{" "}
-                <strong className="text-white">
-                  {userToDelete?.fullName || userToDelete?.name} ({userToDelete?.email})
-                </strong>
-                . This action cannot be undone.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-end space-x-3 pt-3 border-t border-border">
-            <Button variant="ghost" type="button" onClick={() => setUserToDelete(null)}>
-              Cancel
-            </Button>
-            <Button variant="danger" onClick={handleDeleteUser} disabled={deleting}>
-              {deleting ? "Deleting..." : "Permanently Delete"}
-            </Button>
-          </div>
-        </div>
-      </Modal>
+        itemName={userToDelete ? `${userToDelete.fullName || userToDelete.name} (${userToDelete.email})` : undefined}
+        message="Are you sure you want to permanently delete this user? This will revoke all portal access and permissions immediately. This action cannot be undone."
+        confirmText="Permanently Delete"
+        isLoading={deleting}
+      />
     </div>
   );
 }

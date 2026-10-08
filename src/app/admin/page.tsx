@@ -7,7 +7,6 @@ import {
   artistService,
   videoService,
   eventService,
-  studioService,
   contactService,
   newsletterService,
 } from "@/services/api";
@@ -19,7 +18,6 @@ import {
   Users,
   Video,
   Calendar,
-  Mic,
   Inbox,
   Mail,
   TrendingUp,
@@ -35,7 +33,6 @@ export default function AdminOverviewPage() {
     artists: 0,
     videos: 0,
     events: 0,
-    bookings: 0,
     inbox: 0,
     subscribers: 0,
     totalStreams: 0,
@@ -52,7 +49,6 @@ export default function AdminOverviewPage() {
           artistsRes,
           videosRes,
           eventsRes,
-          bookingsRes,
           inboxRes,
           subscribersRes,
         ] = await Promise.allSettled([
@@ -60,7 +56,6 @@ export default function AdminOverviewPage() {
           artistService.getArtists(),
           videoService.getVideos(),
           eventService.getEvents(),
-          studioService.getBookings(),
           contactService.getMessages(),
           newsletterService.getSubscribers(),
         ]);
@@ -69,7 +64,6 @@ export default function AdminOverviewPage() {
         const artists = artistsRes.status === "fulfilled" ? artistsRes.value.data || [] : [];
         const videos = videosRes.status === "fulfilled" ? videosRes.value.data || [] : [];
         const events = eventsRes.status === "fulfilled" ? eventsRes.value.data || [] : [];
-        const bookings = bookingsRes.status === "fulfilled" ? bookingsRes.value.data || [] : [];
         const inbox = inboxRes.status === "fulfilled" ? inboxRes.value.data || [] : [];
         const subscribers = subscribersRes.status === "fulfilled" ? subscribersRes.value.data || [] : [];
 
@@ -80,7 +74,6 @@ export default function AdminOverviewPage() {
           artists: artists.length,
           videos: videos.length,
           events: events.length,
-          bookings: bookings.length,
           inbox: inbox.length,
           subscribers: subscribers.length,
           totalStreams,
@@ -131,11 +124,11 @@ export default function AdminOverviewPage() {
       color: "text-purple-400",
     },
     {
-      title: "Studio Reservations",
-      value: stats.bookings,
-      label: "Session Bookings",
-      icon: Mic,
-      href: "/admin/studios",
+      title: "Newsletter Audience",
+      value: stats.subscribers,
+      label: "Active Subscribers",
+      icon: Mail,
+      href: "/admin/newsletter",
       color: "text-primary",
     },
     {
@@ -282,10 +275,10 @@ export default function AdminOverviewPage() {
                 </div>
                 <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
               </Link>
-              <Link href="/admin/studios" className="flex items-center justify-between p-2.5 rounded-lg bg-[#1C1D24] border border-white/[0.05] hover:border-primary/40 transition-colors">
+              <Link href="/admin/contacts" className="flex items-center justify-between p-2.5 rounded-lg bg-[#1C1D24] border border-white/[0.05] hover:border-primary/40 transition-colors">
                 <div className="flex items-center space-x-2.5">
-                  <Mic className="w-4 h-4 text-primary" />
-                  <span className="text-xs font-medium text-white">Review Studio Bookings</span>
+                  <Inbox className="w-4 h-4 text-primary" />
+                  <span className="text-xs font-medium text-white">Review Inquiries</span>
                 </div>
                 <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
               </Link>

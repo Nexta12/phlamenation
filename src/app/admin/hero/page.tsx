@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { Input, Textarea } from "@/components/ui/Input";
 import { useUIStore } from "@/stores/useUIStore";
+import { useConfirmDialog } from "@/stores/useConfirmStore";
 import {
   Video as VideoIcon,
   Image as ImageIcon,
@@ -22,6 +23,7 @@ import {
 } from "lucide-react";
 
 export default function AdminHeroPage() {
+  const { confirmDelete } = useConfirmDialog();
   const [hero, setHero] = useState<HeroConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -170,7 +172,13 @@ export default function AdminHeroPage() {
   };
 
   const handleReset = async () => {
-    if (!confirm("Reset Hero section to default?")) return;
+    const confirmed = await confirmDelete({
+      title: "Reset Hero Section",
+      message: "Are you sure you want to reset the hero section to the default brand visual and typography settings?",
+      confirmText: "Reset to Default",
+      variant: "warning",
+    });
+    if (!confirmed) return;
     try {
       setResetting(true);
       const res = await heroService.resetHero();
